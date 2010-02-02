@@ -6,7 +6,7 @@ use Module::Pluggable search_path => 'App::Nopaste::Service';
 use base 'Exporter';
 our @EXPORT_OK = 'nopaste';
 
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 sub nopaste {
     # process arguments {{{
@@ -27,6 +27,7 @@ sub nopaste {
     $args{nick} = $ENV{NOPASTE_NICK} || $ENV{USER}
         if !defined($args{nick});
 
+    $args{private} = 0 unless defined $args{private};
 
     my $using_default = 0;
     unless (ref($args{services}) eq 'ARRAY' && @{$args{services}}) {
@@ -140,6 +141,10 @@ See the documentation in L<App::Nopaste::Command>.
 
         # you may specify the services to use - but you don't have to
         services => ["Rafb", "Husk"],
+
+        # you can specify if the paste will be private - for sites that
+        # support it, otherwise it will be ignored.
+        private => 1
     );
 
     print $url if $url;
